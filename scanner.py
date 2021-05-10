@@ -76,7 +76,6 @@ class Lexer():
     self.lexer.add('OR operator', r'\|\|')
     self.lexer.add('NOT operator', r'~')
 
-
     #Relational operators
     self.lexer.add('Equality operator', r'==')
     self.lexer.add('Less than operator', r'<')
@@ -99,7 +98,6 @@ class Lexer():
     self.lexer.add('Left bracket', r'\(')
     self.lexer.add('Right bracket', r'\)')
 
-
     #Numbers
     self.lexer.add('Constant', r'\d+')
 
@@ -110,15 +108,10 @@ class Lexer():
     #Inclusion
     self.lexer.add('Require', r'Inclusion')
 
-
-
-
     #Comments
     self.lexer.add('Begin Comment', r'/-')
     self.lexer.add('End Comment', r'-/')
     self.lexer.add('single line Comment', r'--')
-
-
 
     #Token Delimiter
     self.lexer.add('Token Delimiter', r'#')
@@ -127,12 +120,11 @@ class Lexer():
     self.lexer.add('Line Delimiter', r'\^')
     self.lexer.add('Line Delimiter', r'\.')
 
-
-
     #Identifier
     self.lexer.add('Identifier', r'_*[A-Za-z][A-Za-z0-9_]*')
 
-
+   #Identifier Separator
+    self.lexer.add('Identifier Separator', r',')
 
     #Ignore Spaces
     self.lexer.ignore('\s+')
@@ -161,6 +153,8 @@ class Lexer():
 
 
 
+
+
 text = input("Enter String: ")
 lexer = Lexer()
 
@@ -168,7 +162,8 @@ for token in lexer.get_lexer().lex(text):
   if(token in lexer.get_lexer().lex(text) != 0):
     Match = 'Matched'
   else:
-    #raise ValueError("Ran into a %s where it was't expected" % token.gettokentype())
+    #lexer.error_handler(token)
+    #lexer.getsourcepos()
     Match = 'Not Matched'
 
 
