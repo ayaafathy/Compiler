@@ -1,4 +1,5 @@
 from rply import LexerGenerator
+from tabulate import tabulate
 
 class Lexer():
 
@@ -54,8 +55,9 @@ class Lexer():
     #Struct
     self.lexer.add('Struct', r'Srap')
 
-    #Scan –Conditionof ???
-    self.lexer.add('Switch', r'')
+    #Switch
+    self.lexer.add('Switch scan', r'Scan')
+    self.lexer.add('Switch Conditionof', r'Conditionof')
 
     #Stat Symbol
     self.lexer.add('Start Symbol', r'^\@')
@@ -92,8 +94,10 @@ class Lexer():
     #Braces
     self.lexer.add('Left parenthesis', r'\{')
     self.lexer.add('Right parenthesis', r'\}')
-    self.lexer.add('Left bracket', r'\[')
-    self.lexer.add('Right bracket', r'\]')
+    self.lexer.add('Left sq bracket', r'\[')
+    self.lexer.add('Right sq bracket', r'\]')
+    self.lexer.add('Left bracket', r'\(')
+    self.lexer.add('Right bracket', r'\)')
 
 
     #Numbers
@@ -121,6 +125,7 @@ class Lexer():
 
     #Line Delimiter
     self.lexer.add('Line Delimiter', r'\^')
+    self.lexer.add('Line Delimiter', r'\.')
 
 
 
@@ -133,8 +138,20 @@ class Lexer():
     self.lexer.ignore('\s+')
 
 
-    #Ignore Commented Lines
 
+
+  # Ignore Commented Lines
+  def ignore_comments(text):
+    for line in text:
+      line = line.lstrip()
+      if line.startswith('--'):
+        continue
+      yield (line)
+
+
+
+  def error_handler(token):
+    raise ValueError("Ran into a %s where it was't expected" % token.gettokentype())
 
 
 
@@ -142,3 +159,20 @@ class Lexer():
     self._add_tokens()
     return self.lexer.build()
 
+
+
+text = input("Enter String: ")
+lexer = Lexer()
+
+for token in lexer.get_lexer().lex(text):
+  if(token in lexer.get_lexer().lex(text) != 0):
+    Match = 'Matched'
+  else:
+    #raise ValueError("Ran into a %s where it was't expected" % token.gettokentype())
+    Match = 'Not Matched'
+
+
+  table = [['Line NO','Lexeme','Return Token','Word NO in line','Matchability'],
+          [token.source_pos.lineno, token.value, token.name, token.source_pos.colno, Match]]
+
+  print(tabulate(table))
