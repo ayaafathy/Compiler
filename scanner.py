@@ -29,7 +29,8 @@ class Lexer():
     self.lexer.add('Character', r'Cwq')
 
     #CwqSequence: String ???
-    self.lexer.add('String', r'cwq[a-zA-Z]*')
+    self.lexer.add('String', r'cwq[a-zA-Z]+')
+    self.lexer.add('String', r'CwqSequence')
 
     #Float
     self.lexer.add('Float', r'Ifity')
@@ -123,8 +124,12 @@ class Lexer():
     #Identifier
     self.lexer.add('Identifier', r'_*[A-Za-z][A-Za-z0-9_]*')
 
-   #Identifier Separator
-    self.lexer.add('Identifier Separator', r',')
+    #Identifier Separator
+    self.lexer.add('Ident. Separator', r',')
+
+    #Errors
+    self.lexer.add('Error', r'\d\w+')
+    self.lexer.add('Error', r'[^y+]')
 
     #Ignore Spaces
     self.lexer.ignore('\s+')
@@ -157,6 +162,9 @@ class Lexer():
 
 text = input("Enter String: ")
 lexer = Lexer()
+count = 0
+
+
 
 for token in lexer.get_lexer().lex(text):
   if(token in lexer.get_lexer().lex(text) != 0):
@@ -167,7 +175,20 @@ for token in lexer.get_lexer().lex(text):
     Match = 'Not Matched'
 
 
-  table = [['Line NO','Lexeme','Return Token','Word NO in line','Matchability'],
-          [token.source_pos.lineno, token.value, token.name, token.source_pos.colno, Match]]
+for token in lexer.get_lexer().lex(text):
+  if(token.name == "Error"):
+    count += 1
+    Match = 'Not Matched'
+  else:
+    Match = 'Matched'
 
+  table = [['Line NO', 'Lexeme Name', 'Return Token name', 'Word NO in line', 'Matchability'],
+
+           [token.source_pos.lineno, token.value, token.name, token.source_pos.colno, Match]]
   print(tabulate(table))
+
+print("Total Number of error: ", count)
+
+
+
+
