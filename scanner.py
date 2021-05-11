@@ -159,32 +159,30 @@ class Lexer():
 
 
 
-
 text = input("Enter String: ")
 lexer = Lexer()
 count = 0
 
 
-
-for token in lexer.get_lexer().lex(text):
-  if(token in lexer.get_lexer().lex(text) != 0):
-    Match = 'Matched'
-  else:
-    #lexer.error_handler(token)
-    #lexer.getsourcepos()
-    Match = 'Not Matched'
+# --This is main function
+# Ity#decrease(){
+# Ity#3num=5.
+# Whatever (counter<num)
+# reg3=reg3-1.} }
 
 
 for token in lexer.get_lexer().lex(text):
   if(token.name == "Error"):
     count += 1
     Match = 'Not Matched'
+    lexer.error_handler(token)
+    #lexer.getsourcepos()
   else:
     Match = 'Matched'
 
-  table = [['Line NO', 'Lexeme Name', 'Return Token name', 'Word NO in line', 'Matchability'],
-
+  table = [['Line NO', 'Lexeme', 'Return Token', 'Word NO in line', 'Matchability'],
            [token.source_pos.lineno, token.value, token.name, token.source_pos.colno, Match]]
+
   print(tabulate(table))
 
 print("Total Number of error: ", count)
