@@ -96,8 +96,6 @@ class Lexer():
     self.lexer.add('Right parenthesis', r'\}')
     self.lexer.add('Left sq bracket', r'\[')
     self.lexer.add('Right sq bracket', r'\]')
-    self.lexer.add('Left bracket', r'\(')
-    self.lexer.add('Right bracket', r'\)')
 
     #Numbers
     self.lexer.add('Constant', r'\d+')
@@ -159,7 +157,7 @@ class Lexer():
 
 
 
-text = input("Enter String: ")
+text = input('Enter String: ')
 lexer = Lexer()
 count = 0
 
@@ -172,7 +170,8 @@ count = 0
 
 
 for token in lexer.get_lexer().lex(text):
-  if(token.name == "Error"):
+  #lexer.ignore_comments()
+  if(token.name == 'Error'):
     count += 1
     Match = 'Not Matched'
     lexer.error_handler(token)
@@ -185,7 +184,7 @@ for token in lexer.get_lexer().lex(text):
 
   print(tabulate(table))
 
-print("Total Number of error: ", count)
+print('Total Number of error: ', count)
 
 
 
